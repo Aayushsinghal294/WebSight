@@ -3,6 +3,7 @@ import type { Project } from '../types'
 import { Loader2Icon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { dummyProjects } from '../assets/assets'
+import Footer from '../components/Footer'
 
 const MyProjects = () => {
 
@@ -40,7 +41,7 @@ const fetchProjects = async () => {
           </div>
           <div className='flex flex-wrap gap-3.5' >
             {projects.map((project) => (
-              <div key={project.id} onClick={() => navigate(`/project/${project.id}`)} className='relative group w-72 max-sm:mx-auto cursor-pointer bg-gray-900/60 border border-gray-700 rounded-lg overflow-hidden shadow-md group hover:shadow-indigo-700/30 hover:border-indigo-800/80 transition-all duration-300' >
+              <div key={project.id} onClick={() => navigate(`/projects/${project.id}`)} className='relative group w-72 max-sm:mx-auto cursor-pointer bg-gray-900/60 border border-gray-700 rounded-lg overflow-hidden shadow-md group hover:shadow-indigo-700/30 hover:border-indigo-800/80 transition-all duration-300' >
                   <div className='relative w-full h-40 bg-gray-900 overflow-hidden border-b border-gray-800' >
                     {project.current_code ? (
                       <iframe
@@ -86,6 +87,7 @@ const fetchProjects = async () => {
         </div>
       )}
      </div>
+     <Footer />
     </>
   )
 }
