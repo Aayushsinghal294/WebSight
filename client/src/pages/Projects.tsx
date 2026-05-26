@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import type { Project } from '../types'
-import { LaptopIcon, Loader2Icon, MessageSquareIcon, SmartphoneIcon, TabletIcon, XIcon } from 'lucide-react'
+import { ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, FullscreenIcon, LaptopIcon, Loader2Icon, MessageSquareIcon, SaveIcon, SmartphoneIcon, TabletIcon, XIcon } from 'lucide-react'
 import { dummyProjects, dummyConversations } from '../assets/assets'
 
 const Projects = () => {
@@ -12,8 +12,10 @@ const Projects = () => {
   const [project,setProject] = useState<Project | null>(null)
   const [loading,setLoading] = useState(true)
 
+  const [isGenerating,setIsGenerating] = useState(true)
   const [device,setDevice] = useState<'phone' |'tablet' |'desktop'>('desktop')
 
+  const [isSaving,setIsSaving] = useState(false)
   const [isMenuOpen,setIsMenuOpen] = useState(false)
 
   const fetchProject = async () => {
@@ -21,10 +23,28 @@ const Projects = () => {
         setTimeout(()=>{
         if(project){
           setProject({...project, conversation : dummyConversations});
+          setIsGenerating(project.current_code ? false : true)
         }
         setLoading(false)
         },2000)
   }
+
+
+  const saveProject = async () => {
+
+  }
+
+  const downloadCode = () => {
+
+  }
+
+const togglePublish = async () => {
+
+
+}
+
+
+
 
   useEffect(() => {
     fetchProject()
@@ -58,7 +78,30 @@ const Projects = () => {
         <TabletIcon onClick={() => setDevice('tablet')} className={`p-1 rounded size-6 cursor-pointer ${device === 'tablet' ? 'bg-gray-600' : ""}`} />
         <LaptopIcon onClick={() => setDevice('desktop')} className={`p-1 rounded size-6 cursor-pointer ${device === 'desktop' ? 'bg-gray-600' : ""}`} />
       </div>
-      <div></div>
+      <div className='flex items-center justify-end gap-3 flex-1 text-xs sm:text-sm]' >
+        <button onClick={saveProject} disabled={isSaving} className='max-sm:hidden bg-gray-800 hover:bg-gray-700 text-white py-1 px-3.5 flex items-center gap-2 rounded sm:rounded-sm transition-colors border border-gray-700' >
+          {isSaving?<Loader2Icon className='animate-spin' size={16} />:<SaveIcon size={16} />}  Save 
+        </button>
+        <Link target='_blank' to={`/preview/${project.id}`} className='flex items-center gap-2 px-4 py-1 rounded sm:rounded-sm border border-gray-700 hover:border-gray-500 transition-colors' >
+          <FullscreenIcon size={16} />  Preview
+        </Link>
+        <button onClick={downloadCode} className='bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors'  >
+         <ArrowBigDownDashIcon size={16} /> Download
+        </button>
+        <button onClick={togglePublish} className='bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors'  >
+          {
+            project.isPublished ?
+            <EyeOffIcon size={16} /> : <EyeIcon size={16} />
+          }
+          {project.isPublished ? "Unpublish" : "Publish"}
+        </button>
+      </div>
+        </div>
+        <div className='flex-1 flex overflow-auto'>
+          <div>Sidebar</div>
+          <div className='flex-1 p-2 pl-0' >
+                project preview
+          </div>
         </div>
     </div>
   ) : (
